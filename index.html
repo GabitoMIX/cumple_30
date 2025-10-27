@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🎉 ¡Felices 30, amorcito! 💙🖤</title>
+  <meta name="description" content="Página especial de cumpleaños: mensaje, carrusel de fotos y una invitación a cenar." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg:#0b1020;           /* negro azulado */
+      --panel:#0f162e;        /* panel oscuro */
+      --ink:#eaf2ff;          /* texto claro */
+      --muted:#b9c7ff;        /* texto secundario */
+      --accent:#2f6fff;       /* azul principal */
+      --accent-2:#00c7ff;     /* azul celeste */
+      --glow: 0 0 30px rgba(47,111,255,.55), 0 0 60px rgba(0,199,255,.25);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;
+      background:
+        radial-gradient(1200px 600px at 10% -10%, rgba(0,199,255,.15), transparent 60%),
+        radial-gradient(1200px 600px at 90% 110%, rgba(47,111,255,.2), transparent 60%),
+        linear-gradient(180deg, #0b1020 0%, #070b17 100%);
+      color:var(--ink);
+    }
+    a{color:inherit}
+    .wrap{max-width:1100px;margin-inline:auto;padding:28px}
+
+    /* HERO */
+    .hero{
+      position:relative; border-radius:28px; overflow:hidden; padding:46px 28px; text-align:center;
+      background: linear-gradient(180deg, rgba(17,28,58,.65), rgba(9,16,34,.85));
+      outline:1px solid rgba(255,255,255,.06);
+      box-shadow: 0 20px 60px rgba(0,0,0,.45), var(--glow);
+    }
+    .badge{display:inline-block; padding:.35rem .75rem; border-radius:999px; letter-spacing:.2em; font-size:.8rem; text-transform:uppercase; background:rgba(47,111,255,.15); color:var(--muted); border:1px solid rgba(255,255,255,.08)}
+    .hero h1{font-size:clamp(2rem, 4vw + 1rem, 4rem); margin:14px 0 8px; line-height:1.05; font-weight:800}
+    .thirty{
+      font-size:clamp(5rem, 14vw, 12rem);
+      line-height:1; margin:0; letter-spacing:-.03em;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip:text; background-clip:text; color:transparent;
+      text-shadow:0 10px 40px rgba(47,111,255,.35);
+      position:relative; display:inline-block;
+    }
+    .thirty::after{
+      content:"3° PISO"; position:absolute; right:-18px; bottom:6px; font:600 .8rem/1 Poppins; letter-spacing:.2em; color:var(--muted);
+      padding:.25rem .5rem; border:1px solid rgba(255,255,255,.08); border-radius:999px; background:rgba(15,22,46,.65);
+    }
+    .cta-row{display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-top:16px}
+    .btn{
+      padding:12px 18px; border-radius:14px; border:1px solid rgba(255,255,255,.08);
+      background:linear-gradient(180deg, rgba(47,111,255,.25), rgba(47,111,255,.15));
+      color:white; font-weight:600; cursor:pointer; transition:.25s transform, .25s box-shadow, .25s background;
+    }
+    .btn:hover{transform:translateY(-2px); box-shadow:var(--glow)}
+    .btn.sec{background:linear-gradient(180deg, rgba(0,199,255,.18), rgba(0,199,255,.08))}
+
+    /* MENSAJE */
+    .card{margin-top:22px; padding:24px; border-radius:22px; background:linear-gradient(180deg, rgba(12,20,44,.8), rgba(9,14,30,.9)); border:1px solid rgba(255,255,255,.06); box-shadow:0 10px 30px rgba(0,0,0,.35)}
+    .card h2{margin-top:0; font-size:1.25rem; color:var(--muted)}
+    .msg{font-size:1.05rem; line-height:1.75;}
+
+    /* CAROUSEL */
+    .carousel{position:relative; margin-top:26px; --radius:28px; border-radius:22px; overflow:hidden; background:#0a1229; border:1px solid rgba(255,255,255,.06)}
+    .slide img{border-radius:var(--radius); display:block}
+    .slides{display:flex; transition:transform .5s ease; will-change:transform;}
+    .slide{min-width:100%; height: clamp(260px, 58vh, 680px); position:relative; background:#0a1229; display:flex; align-items:center; justify-content:center; overflow:hidden; margin:0}
+    .slide img{width:100%; height:100%; object-fit:contain; object-position:center; display:block; border-radius:var(--radius);}
+    .nav-btn{position:absolute; top:50%; transform:translateY(-50%); background:rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.15); backdrop-filter: blur(4px); width:44px; height:44px; border-radius:999px; display:grid; place-items:center; cursor:pointer}
+    .nav-btn:hover{background:rgba(0,0,0,.5)}
+    .prev{left:10px} .next{right:10px}
+    .dots{position:absolute; left:0; right:0; bottom:10px; display:flex; justify-content:center; gap:8px}
+    .dot{width:10px; height:10px; border-radius:999px; background:rgba(255,255,255,.35); border:1px solid rgba(255,255,255,.5); cursor:pointer}
+    .dot.active{background:linear-gradient(180deg, var(--accent), var(--accent-2)); box-shadow:var(--glow)}
+
+    
+    /* Utility: make images fill and crop (centered) if desired.
+       Apply class 'cover' on .carousel to crop instead of letterbox. */
+    .carousel.cover .slide img{object-fit:cover}
+
+    /* INVITACIÓN */
+    .invite{margin-top:26px; display:grid; gap:16px; grid-template-columns:1fr;}
+    @media (min-width:860px){ .invite{grid-template-columns:1.3fr .7fr;} }
+    .tile{padding:22px; border-radius:20px; background:linear-gradient(180deg, rgba(16,28,56,.8), rgba(10,18,38,.9)); border:1px solid rgba(255,255,255,.06)}
+    .slide img{border-radius:var(--radius); display:block}
+    .tile h3{margin:0 0 8px}
+    .countdown{display:grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap:10px; margin-top:8px}
+    .unit{background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.06); padding:12px; border-radius:16px; text-align:center}
+    .unit b{font-size:1.5rem}
+
+    /* MODAL */
+    .modal{position:fixed; inset:0; display:none; align-items:center; justify-content:center; padding:20px}
+    .modal.active{display:flex}
+    .modal-back{position:absolute; inset:0; background:rgba(0,0,0,.6)}
+    .modal-card{position:relative; z-index:1; max-width:560px; width:100%; background:linear-gradient(180deg, rgba(20,34,70,.95), rgba(12,20,44,.95)); border:1px solid rgba(255,255,255,.08); border-radius:24px; padding:22px}
+    .close{position:absolute; top:12px; right:12px; width:38px; height:38px; border-radius:999px; border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.35); display:grid; place-items:center; cursor:pointer}
+
+    /* AUDIO TOGGLE */
+    .audio-toggle{position:fixed; right:18px; bottom:18px; border-radius:999px; width:52px; height:52px; display:grid; place-items:center; border:1px solid rgba(255,255,255,.1); background:linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03)); cursor:pointer}
+
+    /* CANVAS confetti */
+    canvas#confetti{position:fixed; inset:0; pointer-events:none}
+
+    /* Tips */
+    .tips{opacity:.8; font-size:.9rem}
+
+    /* MAP EMBED */
+    .map-embed iframe{width:100%; height:340px; border:0; border-radius:14px}
+    .map-actions{display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px}
+  </style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+  <div class="wrap">
+    <section class="hero" aria-label="Portada de cumpleaños">
+      <span class="badge">Cumpleaños • 27 Oct</span>
+      <h1>¡Feliz cumpleaños, amorcito! 💙🖤</h1>
+      <p class="thirty" aria-label="Treinta">30</p>
+      <div class="cta-row">
+        <button class="btn" id="openInvite">🎉 Ver invitación a la cena</button>
+        <button class="btn sec" id="shootConfetti">✨ Lanzar confetti</button>
+      </div>
+    </section>
+
+    <section class="card" aria-label="Mensaje para mi esposo">
+      <h2>Un mensajito para ti</h2>
+      <p class="msg">
+        Amorcito, feliz cumpleaños. Bienvenido al 3° piso: <b>"30"</b> años llenos de mucho aprendizaje, de momentos buenos y malos que te han hecho el hombre que eres hoy. Espero que este nuevo año de vida esté lleno de muchas bendiciones — <i>pero no de las que piden tetero</i> 🤭 JAJAJAJ — y de cosas buenas y positivas para ti. Deseo de todo corazón que todos tus anhelos se hagan realidad.
+        <br><br>
+        Espero que nunca se te olvide que <b>te quiero mucho</b> y siempre quiero que seas feliz. <b>Te quiero mucho. ¡Felices 30 añitos! 🥰</b>
+      </p>
+    </section>
+
+    <!-- ===== Carrusel de fotos =====
+      👉 REEMPLAZA las rutas img/1.jpg, img/2.jpg, ... por tus fotos.
+      Sugerencia: crea una carpeta "img" al lado de este archivo e incluye tus imágenes.
+    -->
+    <section class="carousel" aria-label="Carrusel de recuerdos">
+      <div class="slides" id="slides">
+        <figure class="slide"><img src="img/1.jpg" alt="Nosotros 1"></figure>
+        <figure class="slide"><img src="img/2.jpg" alt="Nosotros 2"></figure>
+        <figure class="slide"><img src="img/3.jpg" alt="Nosotros 3"></figure>
+        <figure class="slide"><img src="img/4.jpg" alt="Nosotros 4"></figure>
+      </div>
+      <button class="nav-btn prev" aria-label="Anterior" id="prev">❮</button>
+      <button class="nav-btn next" aria-label="Siguiente" id="next">❯</button>
+      <div class="dots" id="dots" aria-hidden="true"></div>
+    </section>
+
+    <!-- ===== Invitación & cuenta regresiva ===== -->
+    <section class="invite">
+      <article class="tile">
+        <h3>Cuenta regresiva para la cena 🎂</h3>
+        <p class="tips">Puedes cambiar la hora/lugar dentro del modal de la invitación.</p>
+        <div class="countdown" id="countdown" role="timer" aria-live="polite">
+          <div class="unit"><b id="d">0</b><div>Días</div></div>
+          <div class="unit"><b id="h">0</b><div>Horas</div></div>
+          <div class="unit"><b id="m">0</b><div>Min</div></div>
+          <div class="unit"><b id="s">0</b><div>Seg</div></div>
+        </div>
+      </article>
+      <article class="tile">
+        <h3>Te dedico esta cancion <3</h3>
+        <p class="tips">Escuchala :) <code>src</code> abajo y toca ▶️.</p>
+        <audio id="player" controls preload="none" style="width:100%">
+          <!-- Reemplaza por tu canción favorita -->
+          <source src="img/Amor.mp3" type="audio/mpeg">
+        </audio>
+      </article>
+    
+      <article class="tile">
+        <h3>Lugar 📍</h3>
+        <div class="map-actions">
+          <a class="btn" href="https://maps.app.goo.gl/bgMQq16QSiwNziQz9" target="_blank" rel="noopener noreferrer">Abrir en Google Maps</a>
+        </div>
+        <div class="map-embed">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3952.0767937557052!2d-72.48769320000001!3d7.8870346!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e665bcfbf87f06d%3A0x62b559fbfa94db95!2sPicnic%20Sun!5e0!3m2!1ses-419!2sco!4v1761578912644!5m2!1ses-419!2sco" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <p class="tips">El botón te abre la ruta en Google&nbsp;Maps. El mapa es solo de referencia.</p>
+      </article>
+
+    </section>
+
+    <!-- Modal Invitación a la cena -->
+    <div class="modal" id="inviteModal" aria-hidden="true" role="dialog">
+      <div class="modal-back" id="closeModal"></div>
+      <div class="modal-card">
+        <button class="close" id="closeModalBtn" aria-label="Cerrar">✕</button>
+        <h3 style="margin-top:0">Te invito a una cena muy especial 🍽️</h3>
+        <p>Para celebrar tus 30, vamos a disfrutar una noche inolvidable.</p>
+        <div style="display:grid; gap:10px; grid-template-columns:1fr 1fr; margin-top:12px">
+          <label>Fecha
+            <input id="dateIn" type="date" style="width:100%; padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,.15); background:#0d1734; color:white" />
+          </label>
+          <label>Hora
+            <input id="timeIn" type="time" value="20:00" style="width:100%; padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,.15); background:#0d1734; color:white" />
+          </label>
+          <label style="grid-column:1/-1">Lugar
+            <input id="placeIn" type="text" placeholder="Picnic Sun, Cúcuta ✨" style="width:100%; padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,.15); background:#0d1734; color:white" />
+          </label>
+        </div>
+        <div class="cta-row" style="justify-content:flex-end; margin-top:14px">
+          <button class="btn sec" id="addCalendar">🗓️ Agregar al calendario</button>
+          <button class="btn" id="saveInvite">¡Listo! 🎉</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <button class="audio-toggle" id="confettiBtn" title="Confetti rápido">🎊</button>
+
+  <script>
+    // ===== Utilidades =====
+    const $ = s => document.querySelector(s);
+    const $$ = s => Array.from(document.querySelectorAll(s));
+
+    // ===== Carrusel =====
+    const slides = $('#slides');
+    const slideEls = $$('.slide');
+    const dots = $('#dots');
+    let idx = 0;
+
+    function renderDots(){
+      dots.innerHTML = '';
+      slideEls.forEach((_,i)=>{
+        const d = document.createElement('button');
+        d.className = 'dot'+(i===idx?' active':'');
+        d.addEventListener('click',()=>go(i));
+        dots.appendChild(d);
+      })
+    }
+    function go(i){
+      idx = (i+slideEls.length)%slideEls.length;
+      slides.style.transform = `translateX(${-idx*100}%)`;
+      renderDots();
+    }
+    $('#next').addEventListener('click', ()=>go(idx+1));
+    $('#prev').addEventListener('click', ()=>go(idx-1));
+    let startX=0; slides.addEventListener('touchstart',e=>startX=e.touches[0].clientX,{passive:true});
+    slides.addEventListener('touchend',e=>{ const dx=(e.changedTouches[0].clientX-startX); if(Math.abs(dx)>40) go(idx+(dx<0?1:-1)); });
+    document.addEventListener('keydown', e=>{ if(e.key==='ArrowRight') go(idx+1); if(e.key==='ArrowLeft') go(idx-1); });
+    renderDots();
+
+    // ===== Invitación (modal) =====
+    const modal = $('#inviteModal');
+    const openInvite = $('#openInvite');
+    const closeModal = ()=> modal.classList.remove('active');
+    const openModal = ()=>{ modal.classList.add('active'); shoot(180); };
+    $('#closeModal').addEventListener('click', closeModal);
+    $('#closeModalBtn').addEventListener('click', closeModal);
+    openInvite.addEventListener('click', openModal);
+
+    // Persistencia simple
+    const INVITE_KEY = 'cumple30_invite_v2';
+    const OLD_INVITE_KEY = 'cumple30_invite';
+    // Migración: si existe el almacenamiento antiguo, copiarlo al nuevo y normalizar hora
+    (()=>{
+      try{
+        const oldRaw = localStorage.getItem(OLD_INVITE_KEY);
+        if(oldRaw && !localStorage.getItem(INVITE_KEY)){
+          const s = JSON.parse(oldRaw||'{}') || {};
+          const t = (s.time||'').trim();
+          if(t==='19:30' || t==='07:30' || t==='7:30'){
+            s.time = '20:00';
+          }
+          localStorage.setItem(INVITE_KEY, JSON.stringify(s));
+        }
+      }catch(e){}
+    })();
+
+    // --- Migración rápida: si la hora guardada era 7:30 p. m. (19:30), actualízala a 20:00 ---
+    (()=>{
+      try{
+        const s = JSON.parse(localStorage.getItem(INVITE_KEY)||'{}');
+        if(s && typeof s === 'object'){
+          const t = (s.time||'').trim();
+          if(t==='19:30' || t==='07:30' || t==='7:30'){
+            s.time = '20:00';
+            localStorage.setItem(INVITE_KEY, JSON.stringify(s));
+          }
+        }
+      }catch(e){}
+    })();
+
+    const initInvite = ()=>{
+      const stored = JSON.parse(localStorage.getItem(INVITE_KEY)||'{}');
+      const dateEl = $('#dateIn');
+      const timeEl = $('#timeIn');
+      const placeEl = $('#placeIn');
+      // Por defecto 27 Oct 2025
+      if(!stored.date){
+        const def = new Date('2025-10-27T00:00:00');
+        dateEl.value = def.toISOString().slice(0,10);
+      } else { dateEl.value = stored.date }
+      if(stored.time) timeEl.value = stored.time;
+      if(stored.place) placeEl.value = stored.place;
+    }
+    openInvite.addEventListener('click', initInvite);
+
+    $('#saveInvite').addEventListener('click', ()=>{
+      const date = $('#dateIn').value; const time = $('#timeIn').value; const place = $('#placeIn').value;
+      localStorage.setItem(INVITE_KEY, JSON.stringify({date,time,place}));
+      closeModal(); shoot(220);
+      setupCountdown();
+    });
+
+    // Descargar .ics
+    $('#addCalendar').addEventListener('click', ()=>{
+      const date = $('#dateIn').value || '2025-10-27';
+      const time = ($('#timeIn').value||'20:00').replace(':','');
+      const dtstart = date.replaceAll('-','')+'T'+time+'00';
+      // 2 horas después (simple)
+      const dtend = date.replaceAll('-','')+'T'+(Number(time.slice(0,2))+2).toString().padStart(2,'0')+time.slice(2)+'00';
+      const place = ($('#placeIn').value||'Sorpresa');
+      const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Cumple30//ES\nBEGIN:VEVENT\nUID:${Date.now()}@cumple30\nDTSTAMP:${toUTCStamp(new Date())}\nDTSTART:${dtstart}\nDTEND:${dtend}\nSUMMARY:Cena de cumpleaños (30)\nDESCRIPTION:Celebremos tus 30 🎉\nLOCATION:${place}\nEND:VEVENT\nEND:VCALENDAR`;
+      const blob = new Blob([ics], {type:'text/calendar;charset=utf-8'});
+      const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'cena-30.ics'; a.click(); URL.revokeObjectURL(a.href);
+    });
+    function toUTCStamp(d){
+      const pad = n=>String(n).padStart(2,'0');
+      return d.getUTCFullYear()+pad(d.getUTCMonth()+1)+pad(d.getUTCDate())+'T'+pad(d.getUTCHours())+pad(d.getUTCMinutes())+pad(d.getUTCSeconds())+'Z';
+    }
+
+    // ===== Countdown =====
+    function setupCountdown(){
+      const saved = JSON.parse(localStorage.getItem(INVITE_KEY)||'{}');
+      let target;
+      if(saved.date){
+        const t = (saved.time||'20:00')+':00';
+        target = new Date(saved.date+'T'+t);
+      } else {
+        target = new Date('2025-10-27T20:00:00');
+      }
+      function tick(){
+        const now = new Date();
+        const diff = Math.max(0, target - now);
+        const s = Math.floor(diff/1000);
+        const d = Math.floor(s/86400);
+        const h = Math.floor((s%86400)/3600);
+        const m = Math.floor((s%3600)/60);
+        const ss = s%60;
+        $('#d').textContent = d; $('#h').textContent = h; $('#m').textContent = m; $('#s').textContent = ss;
+        if(diff<=0) return; requestAnimationFrame(tick);
+      }
+      tick();
+    }
+    setupCountdown();
+
+    // ===== Confetti minimal =====
+    const C = document.getElementById('confetti');
+    const ctx = C.getContext('2d');
+    let particles = [];
+    function resize(){ C.width = innerWidth; C.height = innerHeight }
+    addEventListener('resize', resize); resize();
+
+    function shoot(n=160){
+      const colors = ['#2f6fff','#00c7ff','#7aa8ff','#b9c7ff','#eaf2ff'];
+      const baseX = innerWidth/2, baseY = innerHeight*.18;
+      for(let i=0;i<n;i++){
+        particles.push({
+          x: baseX + (Math.random()-0.5)*120,
+          y: baseY + (Math.random()-0.5)*40,
+          vx: (Math.random()-0.5)*6,
+          vy: Math.random()*-8 - 4,
+          g: Math.random()*0.25+0.18,
+          s: Math.random()*3+2,
+          r: Math.random()*Math.PI,
+          c: colors[Math.floor(Math.random()*colors.length)],
+          life: Math.random()*120+80
+        })
+      }
+    }
+    function frame(){
+      ctx.clearRect(0,0,C.width,C.height);
+      particles = particles.filter(p=>p.life>0);
+      for(const p of particles){
+        p.life--; p.vy += p.g; p.x += p.vx; p.y += p.vy; p.r += 0.1;
+        ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.r);
+        ctx.fillStyle = p.c; ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*0.6); ctx.restore();
+      }
+      requestAnimationFrame(frame);
+    }
+    frame();
+
+    $('#shootConfetti').addEventListener('click', ()=>shoot(220));
+    $('#confettiBtn').addEventListener('click', ()=>shoot(150));
+    $('.thirty').addEventListener('dblclick', ()=>shoot(260));
+  </script>
+</body>
+</html>
